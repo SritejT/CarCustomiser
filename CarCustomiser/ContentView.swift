@@ -9,10 +9,77 @@ import SwiftUI
 
 struct ContentView: View {
     
-    let car = Car(make: "Mazda", model: "MX-5", topSpeed: 125, acceleration: 7.7, handling: 5)
+    @State private var starterCars = StarterCars()
+    @State private var selectedCar: Int = 0 {
+        didSet {
+            if selectedCar >= starterCars.cars.count {
+                selectedCar = 0
+            }
+        }
+    }
+    @State private var exhaustPackage = false
+    @State private var tiresPackage = false
+    @State private var turboBooster = false
+    @State private var engineUpgrade = false
     var body: some View {
-        Text(car.displayStats())
-            .padding()
+        let exhaustPackageBinding = Binding<Bool> (
+            get: { self.exhaustPackage },
+            set: { newValue in self.exhaustPackage = newValue
+                if newValue == true {
+                    starterCars.cars[selectedCar].topSpeed += 5
+                } else {
+                    starterCars.cars[selectedCar].topSpeed -= 5
+                }
+            }
+        )
+        let tiresPackageBinding = Binding<Bool> (
+            get: { self.tiresPackage },
+            set: { newValue in self.tiresPackage = newValue
+                if newValue == true {
+                    starterCars.cars[selectedCar].handling += 2
+                } else {
+                    starterCars.cars[selectedCar].handling -= 2
+                }
+            }
+        )
+        let turboBoosterBinding = Binding<Bool> (
+            get: { self.turboBooster },
+            set: { newValue in self.turboBooster = newValue
+                if newValue == true {
+                    starterCars.cars[selectedCar].acceleration -= 1
+                } else {
+                    starterCars.cars[selectedCar].acceleration += 1
+                }
+            }
+        )
+        let engineUpgradeBinding = Binding<Bool> (
+            get: { self.engineUpgrade },
+            set: { newValue in self.engineUpgrade = newValue
+                if newValue == true {
+                    starterCars.cars[selectedCar].acceleration -= 1
+                    starterCars.cars[selectedCar].topSpeed += 10
+                } else {
+                    starterCars.cars[selectedCar].acceleration += 1
+                    starterCars.cars[selectedCar].topSpeed -= 10
+                    
+                }
+            }
+        )
+        Form {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("\(starterCars.cars[selectedCar].displayStats())")
+                    .padding()
+                Button("Next Car", action: {
+                    selectedCar += 1
+                })
+            }
+            Section {
+                Toggle("Exhaust Package", isOn: exhaustPackageBinding)
+                Toggle("Tires Package", isOn: tiresPackageBinding)
+                Toggle("Turbo Booster", isOn: turboBoosterBinding)
+                Toggle("Engine Upgrade", isOn: engineUpgradeBinding)
+            }
+        }
     }
 }
 
