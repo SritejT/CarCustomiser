@@ -34,8 +34,18 @@ class CarCustomiserUITests: XCTestCase {
         XCTAssertEqual(tablesQuery.switches["Turbo Booster (Cost: 1000)"].isEnabled, false)
         XCTAssertEqual(tablesQuery.switches["Engine Upgrade (Cost: 1000)"].isEnabled, false)
         */
-                        
-
+    }
+    
+    func testThatAllTogglesExist() {
+        let app = XCUIApplication()
+        app.launch()
+        /*
+        let tablesQuery = app.tables
+        XCTAssertEqual(tablesQuery.switches["Exhaust Package (Cost: 500)"].exists, true)
+        XCTAssertEqual(tablesQuery.switches["Tires Package (Cost: 500)"].exists, true)
+        XCTAssertEqual(tablesQuery.switches["Turbo Booster (Cost: 1000)"].exists, true)
+        XCTAssertEqual(tablesQuery.switches["Engine Upgrade (Cost: 1000)"].exists, true)
+        */
     }
 
     func testLaunchPerformance() throws {
